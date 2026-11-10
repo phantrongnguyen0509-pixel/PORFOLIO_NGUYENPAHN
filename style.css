@@ -1,10 +1,11 @@
-
 /* ========================================
    NGUYEN PHAN — PERSONAL PORTFOLIO
    Design: Premium Editorial / Engineering
 ======================================== */
 
-/* 01. FONTS & DESIGN SYSTEM
+
+/* ========================================
+   01. FONTS & DESIGN SYSTEM
 ======================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
@@ -65,7 +66,8 @@ body:not(.light-mode) {
 }
 
 
-/* 02. RESET & GLOBAL
+/* ========================================
+   02. RESET & GLOBAL
 ======================================== */
 
 * {
@@ -128,7 +130,8 @@ img {
 }
 
 
-/* 03. NAVIGATION
+/* ========================================
+   03. NAVIGATION
 ======================================== */
 
 .navbar {
@@ -202,6 +205,8 @@ img {
     width: 100%;
 }
 
+/* Theme toggle */
+
 .mode-toggle {
     display: grid;
     place-items: center;
@@ -213,9 +218,12 @@ img {
     border: 1px solid var(--border);
     border-radius: 50%;
 
-    font-size: 17px;
+    color: var(--text);
 
-    transition: all var(--transition);
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        color var(--transition);
 }
 
 .mode-toggle:hover {
@@ -223,8 +231,64 @@ img {
     border-color: var(--accent);
 }
 
+.theme-icon {
+    display: block;
+    transition: transform 0.35s ease;
+}
 
-/* 04. HERO
+.mode-toggle:hover .theme-icon {
+    transform: rotate(-12deg);
+}
+
+.light-icon {
+    display: none;
+}
+
+body:not(.light-mode) .moon-icon {
+    display: none;
+}
+
+body:not(.light-mode) .light-icon {
+    display: block;
+}
+
+
+/* ========================================
+   04. THEME TRANSITION
+======================================== */
+
+/*
+   Circular reveal using the View Transitions API.
+   If unsupported, JavaScript uses a normal theme switch.
+*/
+
+::view-transition-old(root) {
+    animation: none;
+    z-index: 1;
+}
+
+::view-transition-new(root) {
+    z-index: 2;
+    animation: theme-reveal 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes theme-reveal {
+    from {
+        clip-path: circle(
+            0 at var(--theme-x, 50vw) var(--theme-y, 50vh)
+        );
+    }
+
+    to {
+        clip-path: circle(
+            150vmax at var(--theme-x, 50vw) var(--theme-y, 50vh)
+        );
+    }
+}
+
+
+/* ========================================
+   05. HERO
 ======================================== */
 
 .hero {
@@ -343,7 +407,8 @@ img {
 }
 
 
-/* 05. SHARED SECTION STYLES
+/* ========================================
+   06. SHARED SECTION STYLES
 ======================================== */
 
 .section {
@@ -399,7 +464,8 @@ img {
 }
 
 
-/* 06. ABOUT
+/* ========================================
+   07. ABOUT
 ======================================== */
 
 .about-layout {
@@ -491,7 +557,8 @@ img {
 }
 
 
-/* 07. SKILLS
+/* ========================================
+   08. SKILLS
 ======================================== */
 
 .skills-list {
@@ -573,7 +640,8 @@ img {
 }
 
 
-/* 08. PROJECTS
+/* ========================================
+   09. PROJECTS
 ======================================== */
 
 .project-list {
@@ -954,42 +1022,142 @@ body:not(.light-mode) .preview-gcd {
 }
 
 
-/* 09. ACCOMPLISHMENTS
+/* ========================================
+   10. ACCOMPLISHMENTS
 ======================================== */
 
-.milestone-list {
-    border-top: 1px solid var(--border);
-}
+/* Achievement category cards */
 
-.milestone-row {
+.achievement-grid {
     display: grid;
-    grid-template-columns: 55px minmax(0, 1fr) auto;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 
-    align-items: center;
-    gap: 30px;
-
-    padding: 30px 0;
-    border-bottom: 1px solid var(--border);
-
-    transition: padding var(--transition);
+    gap: 16px;
 }
 
-.milestone-row:hover {
-    padding-left: 8px;
+.achievement-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    min-height: 225px;
+    padding: 25px;
+
+    overflow: hidden;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+
+    color: var(--text);
+    text-align: left;
+
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        transform var(--transition);
 }
 
-.milestone-number {
-    align-self: flex-start;
-    padding-top: 5px;
+.achievement-card:hover {
+    background: var(--surface-alt);
+    border-color: var(--accent);
+    transform: translateY(-4px);
+}
+
+.achievement-card.active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+}
+
+.achievement-number {
+    margin-bottom: 22px;
 
     color: var(--accent);
     font-size: 11px;
     font-weight: 700;
 }
 
+.achievement-label {
+    margin-bottom: 8px;
+
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+}
+
+.achievement-title {
+    margin-bottom: 9px;
+
+    font-family: var(--font-heading);
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+}
+
+.achievement-description {
+    max-width: 250px;
+
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.achievement-arrow {
+    position: absolute;
+    right: 23px;
+    bottom: 20px;
+
+    color: var(--accent);
+    font-size: 19px;
+
+    transition: transform var(--transition);
+}
+
+.achievement-card:hover .achievement-arrow,
+.achievement-card.active .achievement-arrow {
+    transform: translate(3px, -3px);
+}
+
+/* Achievement detail panel */
+
+.achievement-panel {
+    margin-top: 25px;
+    padding: 30px;
+
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+
+    animation: panel-appear 0.35s ease both;
+}
+
+@keyframes panel-appear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.achievement-panel-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+    padding-bottom: 22px;
+
+    border-bottom: 1px solid var(--border);
+}
+
 .milestone-type {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 7px;
 
     color: var(--accent);
     font-size: 9px;
@@ -997,35 +1165,103 @@ body:not(.light-mode) .preview-gcd {
     letter-spacing: 0.14em;
 }
 
-.milestone-content h3 {
+.achievement-panel-heading h3 {
+    font-family: var(--font-heading);
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+}
+
+.achievement-close {
+    display: grid;
+    place-items: center;
+
+    width: 32px;
+    height: 32px;
+
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+
+    color: var(--muted);
+    font-size: 21px;
+    line-height: 1;
+
+    transition: all var(--transition);
+}
+
+.achievement-close:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+}
+
+.achievement-content {
+    padding-top: 22px;
+}
+
+.achievement-empty {
+    max-width: 600px;
+
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+/* Achievement entries */
+
+.achievement-entry-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.achievement-entry {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.achievement-entry:first-child {
+    padding-top: 0;
+}
+
+.achievement-entry:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.achievement-entry h4 {
     margin-bottom: 5px;
 
     font-family: var(--font-heading);
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 600;
-
-    letter-spacing: -0.035em;
 }
 
-.milestone-content > p:last-child {
+.achievement-organization {
     color: var(--muted);
     font-size: 12px;
 }
 
-.milestone-status {
-    padding: 6px 10px;
+.achievement-year {
+    display: inline-block;
+    margin-top: 7px;
 
-    border: 1px solid var(--border);
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.achievement-entry-description {
+    margin-top: 8px;
+
     color: var(--muted);
-
-    font-size: 8px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    white-space: nowrap;
+    font-size: 12px;
+    line-height: 1.8;
 }
 
 
-/* 10. CONTACT & FOOTER
+/* ========================================
+   11. CONTACT & FOOTER
 ======================================== */
 
 .contact-section {
@@ -1127,7 +1363,8 @@ body:not(.light-mode) .preview-gcd {
 }
 
 
-/* 11. SCROLL REVEAL
+/* ========================================
+   12. SCROLL REVEAL
 ======================================== */
 
 /* Content remains visible if JavaScript is unavailable */
@@ -1164,7 +1401,8 @@ body:not(.light-mode) .preview-gcd {
 }
 
 
-/* 12. TABLET
+/* ========================================
+   13. TABLET
 ======================================== */
 
 @media (max-width: 900px) {
@@ -1211,10 +1449,19 @@ body:not(.light-mode) .preview-gcd {
     .project-details {
         padding-left: 0;
     }
+
+    .achievement-grid {
+        gap: 12px;
+    }
+
+    .achievement-card {
+        padding: 20px;
+    }
 }
 
 
-/* 13. MOBILE
+/* ========================================
+   14. MOBILE
 ======================================== */
 
 @media (max-width: 650px) {
@@ -1326,7 +1573,7 @@ body:not(.light-mode) .preview-gcd {
         font-size: 12px;
     }
 
-    /* About — Side-by-Side Layout */
+    /* About */
 
     .about-layout {
         grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
@@ -1452,24 +1699,30 @@ body:not(.light-mode) .preview-gcd {
 
     /* Accomplishments */
 
-    .milestone-row {
-        grid-template-columns: 28px minmax(0, 1fr);
-        gap: 12px 16px;
-
-        padding: 24px 0;
+    .achievement-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
     }
 
-    .milestone-status {
-        grid-column: 2;
-        justify-self: flex-start;
+    .achievement-card {
+        min-height: 175px;
+        padding: 22px;
     }
 
-    .milestone-content h3 {
-        font-size: 18px;
+    .achievement-number {
+        margin-bottom: 13px;
     }
 
-    .milestone-content > p:last-child {
-        font-size: 11px;
+    .achievement-title {
+        font-size: 20px;
+    }
+
+    .achievement-panel {
+        padding: 22px;
+    }
+
+    .achievement-panel-heading h3 {
+        font-size: 22px;
     }
 
     /* Contact */
@@ -1499,7 +1752,8 @@ body:not(.light-mode) .preview-gcd {
 }
 
 
-/* 14. SMALL MOBILE
+/* ========================================
+   15. SMALL MOBILE
 ======================================== */
 
 @media (max-width: 380px) {
@@ -1557,7 +1811,8 @@ body:not(.light-mode) .preview-gcd {
 }
 
 
-/* 15. ACCESSIBILITY
+/* ========================================
+   16. ACCESSIBILITY
 ======================================== */
 
 :focus-visible {
