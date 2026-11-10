@@ -23,7 +23,7 @@ if (toggleButton) {
 /* ========================================
    2. SCROLL REVEAL
 ======================================== */
-
+document.documentElement.classList.add("js-reveal");
 const revealElements = document.querySelectorAll(
     ".reveal-left, .reveal-up"
 );
