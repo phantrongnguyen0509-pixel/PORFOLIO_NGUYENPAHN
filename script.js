@@ -1,20 +1,32 @@
+
+/* ========================================
+   1. THEME TOGGLE
+======================================== */
+
 const toggleButton = document.getElementById("mode-toggle");
 
-// Đổi giao diện sáng / tối
-toggleButton?.addEventListener("click", () => {
-    const isLightMode = document.body.classList.toggle("light-mode");
+if (toggleButton) {
+    toggleButton.addEventListener("click", () => {
+        const isLightMode = document.body.classList.toggle("light-mode");
 
-    toggleButton.textContent = isLightMode ? "🌙" : "☀️";
-    toggleButton.setAttribute(
-        "aria-label",
-        isLightMode
-            ? "Chuyển sang giao diện tối"
-            : "Chuyển sang giao diện sáng"
-    );
-});
+        toggleButton.innerHTML = isLightMode ? "◐" : "☀️";
 
-// Hiện ảnh, chữ và các thẻ khi cuộn tới
-const revealElements = document.querySelectorAll(".reveal-left, .reveal-up");
+        toggleButton.setAttribute(
+            "aria-label",
+            isLightMode
+                ? "Switch to dark mode"
+                : "Switch to light mode"
+        );
+    });
+}
+
+/* ========================================
+   2. SCROLL REVEAL
+======================================== */
+
+const revealElements = document.querySelectorAll(
+    ".reveal-left, .reveal-up"
+);
 
 if ("IntersectionObserver" in window) {
     const revealObserver = new IntersectionObserver(
@@ -26,32 +38,51 @@ if ("IntersectionObserver" in window) {
                 }
             });
         },
-        { threshold: 0.14 }
+        {
+            threshold: 0.12,
+            rootMargin: "0px 0px -30px 0px"
+        }
     );
 
-    revealElements.forEach((element) => revealObserver.observe(element));
+    revealElements.forEach((element) => {
+        revealObserver.observe(element);
+    });
 } else {
     revealElements.forEach((element) => {
         element.classList.add("is-visible");
     });
 }
 
-// Nút View More Projects mở danh mục phần mềm
+/* ========================================
+   3. PROJECT CATEGORIES
+======================================== */
+
 const viewMoreButton = document.getElementById("view-more-button");
 const projectCategories = document.getElementById("project-categories");
 const categoryMessage = document.getElementById("category-message");
-const categoryButtons = document.querySelectorAll(".category-buttons button");
 
-viewMoreButton?.addEventListener("click", () => {
-    const isExpanded = viewMoreButton.getAttribute("aria-expanded") === "true";
+const categoryButtons = document.querySelectorAll(
+    ".category-buttons button"
+);
 
-    viewMoreButton.setAttribute("aria-expanded", String(!isExpanded));
-    projectCategories.hidden = isExpanded;
+if (viewMoreButton && projectCategories) {
+    viewMoreButton.addEventListener("click", () => {
+        const isExpanded =
+            viewMoreButton.getAttribute("aria-expanded") === "true";
 
-    if (!isExpanded) {
-        categoryMessage.textContent = "Chọn một nhóm để xem.";
-    }
-});
+        viewMoreButton.setAttribute(
+            "aria-expanded",
+            String(!isExpanded)
+        );
+
+        projectCategories.hidden = isExpanded;
+
+        if (!isExpanded && categoryMessage) {
+            categoryMessage.textContent =
+                "Select a category to explore.";
+        }
+    });
+}
 
 categoryButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -64,21 +95,33 @@ categoryButtons.forEach((button) => {
         button.setAttribute("aria-pressed", "true");
 
         const category = button.dataset.category;
-        categoryMessage.textContent =
-            `Bạn đã chọn ${category}. Thêm các project thuộc nhóm này vào portfolio của bạn.`;
+
+        if (categoryMessage) {
+            categoryMessage.textContent =
+                `${category} projects will be displayed here as they are added to the portfolio.`;
+        }
     });
 });
 
-// Cuộn mượt bằng Lenis nếu thư viện tải được
+/* ========================================
+   4. SMOOTH SCROLLING
+======================================== */
+
 if (window.Lenis) {
     const lenis = new Lenis({
         autoRaf: true,
-        lerp: 0.08
+        lerp: 0.08,
+        smoothWheel: true
     });
 
     document.querySelectorAll('a[href^="#"]').forEach((link) => {
         link.addEventListener("click", (event) => {
             const selector = link.getAttribute("href");
+
+            if (!selector || selector === "#") {
+                return;
+            }
+
             const target = document.querySelector(selector);
 
             if (target) {
