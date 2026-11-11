@@ -28,7 +28,7 @@
 
     --content-width: 1160px;
     --nav-height: 76px;
-    --section-space: 110px;
+    --section-space: 92px;
 
     --transition: 0.3s ease;
 }
@@ -522,8 +522,8 @@ body:not(.light-mode) .light-icon {
     margin-bottom: 16px;
 
     color: var(--muted);
-    font-size: 13px;
-    line-height: 2;
+    font-size: 14px;
+    line-height: 1.85;
 }
 
 .about-details {
@@ -567,10 +567,10 @@ body:not(.light-mode) .light-icon {
 
 .skill-row {
     display: grid;
-    grid-template-columns: 55px minmax(0, 1fr) minmax(0, 0.8fr);
+    grid-template-columns: 32px 44px minmax(0, 1fr) minmax(0, 0.8fr);
 
     align-items: center;
-    gap: 30px;
+    gap: 22px;
 
     padding: 32px 0;
     border-bottom: 1px solid var(--border);
@@ -580,6 +580,36 @@ body:not(.light-mode) .light-icon {
 
 .skill-row:hover {
     padding-left: 8px;
+}
+
+.skill-logo-slot {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface) 62%, transparent);
+    color: var(--muted);
+    transition: border-color var(--transition), background var(--transition), color var(--transition);
+}
+
+.skill-logo-slot span {
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.skill-logo-slot img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+}
+
+.skill-row:hover .skill-logo-slot {
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+    background: var(--surface);
+    color: var(--accent);
 }
 
 .skill-number {
@@ -677,6 +707,37 @@ body:not(.light-mode) .light-icon {
 
     overflow: hidden;
     background: var(--surface-alt);
+}
+
+.project-placeholder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border: 1px dashed var(--border);
+    background:
+        linear-gradient(135deg, color-mix(in srgb, var(--surface) 76%, transparent), transparent),
+        repeating-linear-gradient(0deg, transparent 0 35px, color-mix(in srgb, var(--text) 4%, transparent) 35px 36px),
+        repeating-linear-gradient(90deg, transparent 0 35px, color-mix(in srgb, var(--text) 4%, transparent) 35px 36px),
+        var(--surface-alt);
+}
+
+.placeholder-index {
+    color: color-mix(in srgb, var(--accent) 70%, var(--muted));
+    font-family: var(--font-heading);
+    font-size: clamp(52px, 7vw, 86px);
+    font-weight: 500;
+    letter-spacing: -.08em;
+    line-height: 1;
+}
+
+.placeholder-label {
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .18em;
 }
 
 .preview-portfolio {
@@ -1408,7 +1469,7 @@ body:not(.light-mode) .preview-gcd {
 @media (max-width: 900px) {
 
     :root {
-        --section-space: 90px;
+        --section-space: 72px;
     }
 
     .navbar {
@@ -1613,8 +1674,8 @@ body:not(.light-mode) .preview-gcd {
 
     .about-content > p:not(.about-lead) {
         margin-bottom: 12px;
-        font-size: 11px;
-        line-height: 1.7;
+        font-size: 12px;
+        line-height: 1.75;
     }
 
     .about-details {
@@ -1636,15 +1697,20 @@ body:not(.light-mode) .preview-gcd {
     /* Skills */
 
     .skill-row {
-        grid-template-columns: 28px minmax(0, 1fr);
+        grid-template-columns: 24px 36px minmax(0, 1fr);
         gap: 12px 16px;
 
         padding: 25px 0;
     }
 
     .skill-tags {
-        grid-column: 2;
+        grid-column: 3;
         justify-content: flex-start;
+    }
+
+    .skill-logo-slot {
+        width: 34px;
+        height: 34px;
     }
 
     .skill-main h3 {
@@ -1839,3 +1905,156 @@ body:not(.light-mode) .preview-gcd {
         transform: none;
     }
 }
+/* Refined typography motion */
+.hero-eyebrow {
+    animation: eyebrow-in 700ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.hero h1 {
+    animation: headline-in 950ms 100ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.hero h1 span {
+    display: inline-block;
+    color: var(--accent);
+}
+
+.hero-description {
+    animation: copy-in 800ms 450ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.section-heading h2 {
+    position: relative;
+    width: fit-content;
+}
+
+.section-heading h2::after {
+    position: absolute;
+    right: 0;
+    bottom: -8px;
+    left: 0;
+    height: 2px;
+    content: "";
+    transform: scaleX(0);
+    transform-origin: left;
+    background: linear-gradient(90deg, var(--accent), rgba(255,255,255,0));
+    transition: transform 800ms 180ms cubic-bezier(.2,.8,.2,1);
+}
+
+.js-reveal .section-heading.is-visible h2::after {
+    transform: scaleX(1);
+}
+
+.project-details h3,
+.achievement-title {
+    transition: color .3s ease, letter-spacing .3s ease;
+}
+
+.project-item:hover .project-details h3,
+.achievement-card:hover .achievement-title {
+    color: var(--accent);
+    letter-spacing: -.025em;
+}
+
+@keyframes eyebrow-in {
+    from { opacity: 0; transform: translateY(8px); letter-spacing: .28em; }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes headline-in {
+    from { opacity: 0; transform: translateY(22px); filter: blur(7px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes copy-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-eyebrow, .hero h1, .hero-description { animation: none !important; }
+    .section-heading h2::after { transition: none; }
+}
+
+
+
+/* Hero refinements */
+.hero-content {
+    position: relative;
+    isolation: isolate;
+}
+
+.hero-content::before {
+    position: absolute;
+    z-index: -1;
+    top: 5%;
+    right: -8%;
+    width: min(34vw, 390px);
+    aspect-ratio: 1;
+    content: "";
+    border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 34px color-mix(in srgb, var(--accent) 3%, transparent), 0 0 0 72px color-mix(in srgb, var(--accent) 2%, transparent);
+    pointer-events: none;
+}
+
+.hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: fit-content;
+    font-size: 12px;
+    letter-spacing: .24em;
+}
+
+.hero-eyebrow::before {
+    width: 28px;
+    height: 1px;
+    content: "";
+    background: var(--accent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.hero-description {
+    max-width: 610px;
+    font-size: clamp(14px, 1.35vw, 17px);
+}
+
+.hero-cta {
+    position: relative;
+    min-height: 54px;
+    padding: 0 20px 0 23px;
+    gap: 22px;
+    border: 1px solid color-mix(in srgb, var(--accent) 48%, var(--border));
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 76%, transparent);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, .08);
+    transition: color var(--transition), border-color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.hero-cta:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    box-shadow: 0 12px 34px color-mix(in srgb, var(--accent) 17%, transparent);
+}
+
+.hero-cta span {
+    display: grid;
+    place-items: center;
+    width: 29px;
+    height: 29px;
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+@media (max-width: 650px) {
+    .hero-eyebrow { font-size: 10px; }
+    .hero-content::before { top: 15%; right: -15%; width: 62vw; opacity: .65; }
+    .hero-bottom { align-items: flex-start; }
+    .hero-description { max-width: 100%; font-size: 14px; }
+    .hero-cta { align-self: flex-start; }
+}
+
